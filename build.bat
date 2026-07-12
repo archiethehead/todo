@@ -1,1 +1,1 @@
-cl main.c -o Plan.exe
+cl main.c /I "./External" -o Plan.exe
