@@ -1,14 +1,13 @@
-#include <stdio.h>
-#include <time.h>
-#include <cjson/cjson.h>
-
-extern int __cdecl strequal(char* command, char* userin);
+#include <stdlib.h>
+#include <plan.h>
+#define strequal(x, y) !(strcmp(x, y))
 
 typedef struct argcommandstruct {
 
     char* shortname;
     char* longname;
     void (*fptrs)(char* argv[]);
+    
 
 } argcommand;
 
@@ -32,11 +31,16 @@ int main(int argc, char* argv[]) {
 
     if (!argc) return 1;
 
-    if(strequal("-h", "-h")){
+    for (int i = 0; i < commandcount; i++) {
 
-        printf("Equal");
+        if(strequal(argcommands[i].shortname, argv[1]) || strequal(argcommands[i].longname, argv[1])){
+            
+            printf("%s \n%s \n%s \n", (argcommands[i].shortname), (argcommands[i].longname), (argv[1]));
+            printf("Equal");
 
-    };
+        };
+
+    }
     
     return 0;
 
