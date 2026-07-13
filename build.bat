@@ -1,1 +1,3 @@
-cl main.c /I "./External" -o Plan.exe
+@echo off
+cl Source\*.c /I "./External" /I "./Include" /Fe:Plan.exe
+del *.obj
