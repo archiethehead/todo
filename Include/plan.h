@@ -3,6 +3,7 @@
 #ifndef PLAN_H
 #define PLAN_H
 
-void help(char* argv[]);
+void help(int* argc, char** argv);
+void add(int* argc, char** argv);
 
 #endif //PLAN_H
