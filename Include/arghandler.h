@@ -1,19 +1,15 @@
 #include <plan.h>
 
-#pragma once 
-
 #ifndef ARGHANDLER_H
 #define ARGHANDLER_H
 
+#define strequal(x, y) !(strcmp(x, y))
+
 typedef struct argcommandstruct {
 
-    // metadata
     char* name;
-    char* margs;
-    char* oargs;
     char* description;
     void (*fptrs)(int* argc, char** argv);
-
 
 } argcommand;
 

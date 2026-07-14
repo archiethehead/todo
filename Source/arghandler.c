@@ -1,11 +1,10 @@
 #include <arghandler.h>
 
-#define EMPTY "None"
-
 const argcommand argcommands[] =    {
 
-                                    {"help", EMPTY, "Command Name", "Outputs the details of a command(s) this program can execute", &help},
-
+                                    {"help",    "[command name] Outputs the details of a command(s) this program can execute", &help},
+                                    {"newtask", "<task name, assignee> [deadline(dd/mm/yy)] writes a task to the database according to your input value(s)", &help}
+    
                                     };
 
 const int commandcount = sizeof(argcommands) / sizeof(argcommand);
