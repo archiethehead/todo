@@ -2,7 +2,7 @@
 
 const argcommand argcommands[] =    {
 
-                                    {"help",    "[command name] Outputs the details of a command(s) this program can execute", &help},
+                                    {"help",    "[command name(s)] Outputs the details of a command(s) this program can execute", &help},
                                     {"newtask", "<task name, assignee> [deadline(dd/mm/yy)] writes a task to the database according to your input value(s)", &help}
     
                                     };

@@ -9,30 +9,36 @@ void help(int* argc, char** argv) {
     puts("\nCOMMANDS\n--------\n\n<> = Mandatory Argument(s)\n[] = Optional Argument(s)\nArguments are not case-sensitive.\nArguments are order-sensitive.\n");
 
     
-    char arrow[] = "--->";
+    char error[] = "ERROR";
 
-    if (*argc == 3) {
+    if (*argc > 2) {
 
-        for (int i = 0; i < commandcount; i++) {
+        for (int j = 2; j < *argc; j++) {
 
-           if (strequal(argv[2], argcommands[i].name)) {
+            for (int i = 0; i < commandcount; i++) {
 
-                printf("%-8s %s %s\n", argcommands[i].name, arrow, argcommands[i].description);
-                
-                return;
+               if (strequal(argv[j], argcommands[i].name)) {
 
-            } 
+                    printf("%-8s ---> %s\n", argcommands[i].name, argcommands[i].description);
+                    goto done;          
     
-        }
+                } 
         
-        printf("ERROR ---> Unrecognised command name :(");
+            }
+            
+            printf("%-8s ---> %s is an unrecognised command name :(\n", error, argv[j]);
+            
+            done:;
+
+       }
+
         return;
 
     }
 
     for (int i = 0; i < commandcount; i++) {
         
-        printf("%-8s %s %s\n", argcommands[i].name, arrow, argcommands[i].description);
+        printf("%-8s ---> %s\n", argcommands[i].name, argcommands[i].description);
         
 
     }
