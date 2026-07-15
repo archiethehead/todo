@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <arghandler.h>
 #include <plan.h>
-#include <db.h>
+#include <binfile.h>
 
 int main(int argc, char* argv[]) {
 
@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     FILE *fp = fopen("plan.db", "r");
     if (!fp) {
 
-        initDB();        
+        initBinFile();        
 
     }
 
@@ -20,8 +20,6 @@ int main(int argc, char* argv[]) {
         fclose(fp);
 
     }
-
-    openDB();
 
     for (int i = 0; i < argc; i++) {
 
@@ -33,7 +31,7 @@ int main(int argc, char* argv[]) {
     
         if(strequal(argcommands[i].name, argv[1])){
 
-            argcommands[i].fptrs(&argc, argv);            
+            argcommands[i].fptrs(argc, argv);            
 
         };
 

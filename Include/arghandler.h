@@ -9,7 +9,7 @@ typedef struct argcommandstruct {
 
     char* name;
     char* description;
-    void (*fptrs)(int* argc, char** argv);
+    void (*fptrs)(int argc, char** argv);
 
 } argcommand;
 
