@@ -9,5 +9,6 @@
 
 void help(int argc, char** argv);
 void newtask(int argc, char** argv);
+void outputTasks(int argc, char** argv);
 
 #endif //PLAN_H

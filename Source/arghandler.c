@@ -3,8 +3,9 @@
 const argcommand argcommands[] =    {
 
                                     {"help",    "[command name(s)] Outputs the details of a command(s) this program can execute", &help},
-                                    {"newtask", "<task name, assignee> [deadline(dd/mm/yy)] writes a task to the database according to your input value(s)", &newtask}
-    
+                                    {"newtask", "<task name, assignee> [deadline(dd/mm/yy)] writes a task to the database according to your input value(s)", &newtask},
+                                    {"tasksout","[huh?]", &outputTasks}
+
                                     };
 
 const int commandcount = sizeof(argcommands) / sizeof(argcommand);

@@ -6,14 +6,18 @@
 
 #define TEXT_SIZE 64
 
-extern void initBinFile();
-extern int verbose;
+// Definitions for thes states of
+// the task struct state flag.
+#define FREE 0
+#define TAKEN 1
+#define COMPLETED 2
+#define OVERDUE 3
 
 #pragma pack(push, 1)
 
 typedef struct {
 
-    unsigned char free;
+    unsigned char status;
     unsigned short id;
     time_t timestamp;
     char title[TEXT_SIZE];
@@ -23,5 +27,10 @@ typedef struct {
 } Task;
 
 #pragma pack(pop)
+
+extern void initBinFile();
+extern void addTaskToFile(Task newTask);
+extern void outputAlltasks();
+extern int verbose;
 
 #endif

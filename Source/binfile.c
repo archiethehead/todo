@@ -50,7 +50,7 @@ void addTaskToFile(Task newTaskStruct) {
         unsigned char flag;
         fread(&flag, sizeof(flag), 1, fileptr);
         
-        if (flag) {
+        if (!flag) {
 
             fseek(fileptr, offset, SEEK_SET);
             
@@ -78,6 +78,38 @@ void addTaskToFile(Task newTaskStruct) {
 
     fwrite(&newTaskStruct,  sizeof(Task), 1, fileptr);
     fclose(fileptr);
+    return;
+
+}
+
+void outputAllTasks() {
+    
+    printf("\n-----\nTASKS\n-----\n\n");
+
+    int size = getBinFileSize();
+    FILE* fileptr = fopen(FILE_NAME, "r+b");
+    
+    if (!fileptr) {
+
+        fileNotOpenedError;
+
+    }
+
+    
+    for (int i = 0; i < size; i++) {
+        
+        int offset = i * sizeof(Task);
+        fseek(fileptr, offset, SEEK_SET);
+        
+        Task taskBuff;
+        fread(&taskBuff, sizeof(taskBuff), 1, fileptr);
+
+        printf("%s\nCategory --> %s \nAssignee --> %s \nDeadline --> %s\n",
+                taskBuff.title, taskBuff.category, taskBuff.assignee, ctime(&taskBuff.timestamp));
+
+
+    }
+
     return;
 
 }

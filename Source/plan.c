@@ -1,8 +1,6 @@
 #include <plan.h>
 #include <binfile.h>
 
-#define EMPTY "NONE"
-
 int verbose = 0;
 
 extern char *optarg;
@@ -128,7 +126,7 @@ void newtask(int argc, char** argv) {
     }
 
     Task newTaskStruct;
-    newTaskStruct.free = 0;
+    newTaskStruct.status = TAKEN;
     newTaskStruct.id = 5;
     newTaskStruct.timestamp = epochTime;
     strcpy(newTaskStruct.title, taskName);
@@ -137,6 +135,12 @@ void newtask(int argc, char** argv) {
     addTaskToFile(newTaskStruct);   
 
     return;
+
+}
+
+void outputTasks(int argc, char** argv) {
+
+    outputAllTasks();    
 
 }
 
