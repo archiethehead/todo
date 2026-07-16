@@ -1,5 +1,6 @@
 #include <plan.h>
 #include <binfile.h>
+#include <arghandler.h>
 
 int verbose = 0;
 
@@ -20,7 +21,7 @@ void newtask(int argc, char** argv) {
 
     optind = 0;    
 
-    char* args[] = {"task", "help", "newtask"};
+    char* args[] = {"task", "help", "newtodo"};
 
     while((opt = getopt(argc, argv, "n:c::d::t::a::v")) != -1) {
 
@@ -96,6 +97,7 @@ void newtask(int argc, char** argv) {
                     taskAssignee = optarg; 
 
                 }
+                break;
 
             case 'v':
                 verbose = 1;
@@ -138,19 +140,30 @@ void newtask(int argc, char** argv) {
 
 }
 
+
+strarg outputArgs[] =    {
+
+                                {"Free", 1},
+                                {"Active", 2},
+                                {"Completed", 3},
+                                {"Overdue", 4}
+
+                         };
+
 void outputTasks(int argc, char** argv) {
 
     
     int opt;
+    char* filter = NULL;
 
     argv += 2;
     argc -= 2;
 
     optind = 0;    
 
-    char* args[] = {"task", "help", "outputTasks"};
+    char* args[] = {"task", "help", "todoout"};
 
-    while((opt = getopt(argc, argv, "v")) != -1) {
+    while((opt = getopt(argc, argv, "f::v")) != -1) {
 
         if (verbose) {
     
@@ -159,6 +172,16 @@ void outputTasks(int argc, char** argv) {
         }
         
         switch(opt) {
+
+            case 'f':
+
+                if (optarg) {
+
+                    filter = optarg;
+
+                }
+                
+                break;
 
             case 'v':
                 verbose = 1;
@@ -172,7 +195,37 @@ void outputTasks(int argc, char** argv) {
 
     }
 
-    outputAllTasks();    
+    if (filter == NULL) {
+    
+        outputAllTasks("Active", 2);
+        outputAllTasks("Overdue", 4);   
+        return;        
+
+    } 
+
+
+    toLower(filter);
+    
+    if(filter[0] > 96 && filter[0] < 123) {
+
+            filter[0] -= 32;
+
+    }
+ 
+    for (int i = 0; i < 4; i++) {
+
+        if(strequal(filter, outputArgs[i].str)) {
+
+            outputAllTasks(outputArgs[i].str, outputArgs[i].num);
+            return;
+
+        }
+
+    }
+    
+    printf("ERROR ---> Invalid filter argument :(");
+    help(3, args);
+    return;
 
 }
 
@@ -223,4 +276,4 @@ void help(int argc, char** argv) {
     puts("\n");
     return;
 
-};
+}

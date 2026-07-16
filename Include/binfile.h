@@ -1,6 +1,7 @@
 #ifndef BINFILE_H
 #define BINFILE_H
 
+#include <stdint.h>
 #include <stdio.h>
 #include <time.h>
 
@@ -8,17 +9,23 @@
 
 // Definitions for thes states of
 // the task struct state flag.
-#define FREE 0
-#define TAKEN 1
-#define COMPLETED 2
-#define OVERDUE 3
+#define FREE 1
+#define TAKEN 2
+#define COMPLETED 3
+#define OVERDUE 4
+
+extern uint8_t idBitmap[1024];
+
+#define SET_ID(id) (idBitmap[id >> 3] |= (1 << (id & 7)))
+#define SET_ID(id) (idBitmap[id >> 3] |= (1 << (id & 7)))
+#define UNSET_ID(id) (idBitmap[id >> 3] &= ~(1 << (id & 7)))
 
 #pragma pack(push, 1)
 
 typedef struct {
 
-    unsigned char status;
-    unsigned short id;
+    uint8_t status;
+    uint16_t id;
     time_t timestamp;
     char title[TEXT_SIZE];
     char assignee[TEXT_SIZE];
@@ -31,6 +38,7 @@ typedef struct {
 extern void initBinFile();
 extern void addTaskToFile(Task newTask);
 extern void outputAlltasks();
+extern void outputActivetasks();
 extern int verbose;
 
 #endif

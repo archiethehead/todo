@@ -4,13 +4,21 @@
 #define FILE_NAME "Tasks.bin"
 #define fileNotOpenedError printf("%s", fileNotOpened)
 
-char fileNotOpened[] = "ERROR ---> Tasks file could not be opened :(";
+char fileNotOpened[] = "ERROR ---> Tasks file could not be opened :("; 
+
+uint8_t idBitmap[1024] = {0};
 
 void initBinFile() {
 
     FILE* fileptr;
     fileptr = fopen(FILE_NAME, "w");
     fclose(fileptr);
+
+}
+
+void updateBinFile() {
+
+    
 
 }
 
@@ -82,9 +90,9 @@ void addTaskToFile(Task newTaskStruct) {
 
 }
 
-void outputAllTasks() {
+void outputAllTasks(char* status, uint8_t flag) {
     
-    printf("\n-----\nTASKS\n-----\n");
+    printf("\n\n%s tasks:\n", status);
 
     int size = getBinFileSize();
     FILE* fileptr = fopen(FILE_NAME, "r+b");
@@ -110,6 +118,12 @@ void outputAllTasks() {
         Task taskBuff;
         fread(&taskBuff, sizeof(taskBuff), 1, fileptr);
 
+        if (!((taskBuff.status == flag) || (!flag))) {
+
+            continue;
+
+        }
+
         char status[11];
 
         switch(taskBuff.status) {
@@ -126,7 +140,8 @@ void outputAllTasks() {
                 strcpy(status, "Overdue");
                 break;
 
-        }
+        }   
+
         printf("\n\n%s\nID --> %d \nCategory --> %s \nAssignee --> %s \nDeadline --> %sStatus ---> %s",
                 taskBuff.title, taskBuff.id, taskBuff.category, taskBuff.assignee, ctime(&taskBuff.timestamp), status);
 
