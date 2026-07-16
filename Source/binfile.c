@@ -72,7 +72,7 @@ void addTaskToFile(Task newTaskStruct) {
     
     if (verbose) {
     
-        printf("\nWriting at position %d", ftell(fileptr));
+        printf("\nWriting at position 0x%x", ftell(fileptr));
 
     }
 
@@ -84,7 +84,7 @@ void addTaskToFile(Task newTaskStruct) {
 
 void outputAllTasks() {
     
-    printf("\n-----\nTASKS\n-----\n\n");
+    printf("\n-----\nTASKS\n-----\n");
 
     int size = getBinFileSize();
     FILE* fileptr = fopen(FILE_NAME, "r+b");
@@ -101,15 +101,37 @@ void outputAllTasks() {
         int offset = i * sizeof(Task);
         fseek(fileptr, offset, SEEK_SET);
         
+        if (verbose) {
+
+            printf("\n\nReading at position 0x%x", ftell(fileptr));
+
+        }
+
         Task taskBuff;
         fread(&taskBuff, sizeof(taskBuff), 1, fileptr);
 
-        printf("%s\nCategory --> %s \nAssignee --> %s \nDeadline --> %s\n",
-                taskBuff.title, taskBuff.category, taskBuff.assignee, ctime(&taskBuff.timestamp));
+        char status[11];
 
+        switch(taskBuff.status) {
+
+            case TAKEN:
+                strcpy(status, "Active");
+                break;
+
+            case COMPLETED:
+                strcpy(status, "Completed");
+                break;
+
+            case OVERDUE:
+                strcpy(status, "Overdue");
+                break;
+
+        }
+        printf("\n\n%s\nID --> %d \nCategory --> %s \nAssignee --> %s \nDeadline --> %sStatus ---> %s",
+                taskBuff.title, taskBuff.id, taskBuff.category, taskBuff.assignee, ctime(&taskBuff.timestamp), status);
 
     }
 
     return;
 
-}
+} 

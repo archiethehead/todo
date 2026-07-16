@@ -140,6 +140,38 @@ void newtask(int argc, char** argv) {
 
 void outputTasks(int argc, char** argv) {
 
+    
+    int opt;
+
+    argv += 2;
+    argc -= 2;
+
+    optind = 0;    
+
+    char* args[] = {"task", "help", "outputTasks"};
+
+    while((opt = getopt(argc, argv, "v")) != -1) {
+
+        if (verbose) {
+    
+            printf("Parsing %c as %s\n", opt, optarg);
+
+        }
+        
+        switch(opt) {
+
+            case 'v':
+                verbose = 1;
+                break;
+            
+            case '?':
+                help(3, args);
+                return;
+
+        }
+
+    }
+
     outputAllTasks();    
 
 }
