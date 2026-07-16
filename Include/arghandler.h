@@ -17,6 +17,8 @@ extern const argcommand argcommands[];
 
 extern const int commandcount;
 
+extern int verbose;
+
 extern void toLower(char* string);
 
 #endif //ARGHANDLER_H

@@ -20,24 +20,7 @@ int main(int argc, char* argv[]) {
         fclose(fp);
 
     }
-
-    char test[] = "aaa";
-    
-    Task newTaskStruct;
-    newTaskStruct.free = 0;
-    newTaskStruct.id = 5;
-    newTaskStruct.timestamp = 6;
-    strcpy(newTaskStruct.title, test);
-    strcpy(newTaskStruct.assignee, test);
-    strcpy(newTaskStruct.category, test);
-    addTaskToFile(newTaskStruct);
-    
-    for (int i = 0; i < argc; i++) {
-
-        toLower(argv[i]);
-
-    }   
-
+ 
     for (int i = 0; i < commandcount; i++) {
     
         if(strequal(argcommands[i].name, argv[1])){

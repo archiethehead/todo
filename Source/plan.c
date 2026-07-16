@@ -1,14 +1,142 @@
-#include <arghandler.h>
 #include <plan.h>
-#include <stdio.h>
+#include <binfile.h>
 
 #define EMPTY "NONE"
 
+int verbose = 0;
+
+extern char *optarg;
+extern int optind;
+
 void newtask(int argc, char** argv) {
 
-    int c;
+    int opt;
     char* taskName = NULL;
-    char* taskCategory;
+    char* taskAssignee = "Everyone";
+    char* taskCategory = "N/A";
+    struct tm time = {0}; 
+    time.tm_isdst = -1;
+
+    argv += 2;
+    argc -= 2;
+
+    optind = 0;    
+
+    char* args[] = {"task", "help", "newtask"};
+
+    while((opt = getopt(argc, argv, "n:c::d::t::a::v")) != -1) {
+
+        if (verbose) {
+    
+            printf("Parsing %c as %s\n", opt, optarg);
+
+        }
+        
+        switch(opt) {
+
+            case 'n':
+
+                if (optarg) {
+
+                    taskName = optarg;
+
+                }
+
+                break;
+            
+            case 'c':
+            
+                if (optarg) {
+                    
+                    taskCategory = optarg;
+                
+                }
+
+                break;
+
+            case 'd':
+                
+                int year, month, day;
+                if(sscanf(optarg, "%d-%d-%d", &day, &month, &year) == 3) {
+    
+                    time.tm_year = year - 1900;
+                    time.tm_mon = month - 1;
+                    time.tm_mday =  day;
+                    break;
+
+                }
+
+                else {
+
+                    printf("ERROR ---> Invalid date format entered, dd-mm-yyyy was expected :(");
+                    return;
+        
+                }
+                
+            case 't':
+                
+                int hours, minutes;
+                if (sscanf(optarg, "%d:%d", &hours, &minutes) == 2) {
+
+                     time.tm_hour = hours;
+                    time.tm_min = minutes;
+                    break;
+
+                }
+
+                else {
+
+                    printf("ERROR ---> Invalid time format entered, hh:mm was expected :(");                    
+                    return;    
+
+                }
+
+            case 'a':
+
+                if (optarg) {
+
+                    taskAssignee = optarg; 
+
+                }
+
+            case 'v':
+                verbose = 1;
+                break;
+            
+            case '?':
+                help(3, args);
+                return;
+
+        }
+
+    }
+
+    if (!taskName) {
+        
+        printf("ERROR ---> required argument (task name) not specified :(\n");
+        help(3, args);
+        return;
+
+    }
+    
+    time_t epochTime = mktime(&time);
+   
+    if (verbose) {
+        
+        printf("\nArguments parsed:\nName -> %s \nAssignee -> %s \nCategory -> %s \nDeadline -> %s", taskName, taskCategory, taskAssignee, ctime(&epochTime));
+
+    }
+
+    Task newTaskStruct;
+    newTaskStruct.free = 0;
+    newTaskStruct.id = 5;
+    newTaskStruct.timestamp = epochTime;
+    strcpy(newTaskStruct.title, taskName);
+    strcpy(newTaskStruct.assignee, taskAssignee);
+    strcpy(newTaskStruct.category, taskCategory);
+    addTaskToFile(newTaskStruct);   
+
+    return;
 
 }
 

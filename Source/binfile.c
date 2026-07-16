@@ -2,7 +2,9 @@
 #include <binfile.h>
 
 #define FILE_NAME "Tasks.bin"
+#define fileNotOpenedError printf("%s", fileNotOpened)
 
+char fileNotOpened[] = "ERROR ---> Tasks file could not be opened :(";
 
 void initBinFile() {
 
@@ -18,7 +20,7 @@ int getBinFileSize() {
     
     if (!fileptr) {
 
-        printf("ERROR ---> Tasks file could not be found :(");
+        fileNotOpenedError;
         return -1;
 
     }
@@ -35,6 +37,12 @@ void addTaskToFile(Task newTaskStruct) {
     int size = getBinFileSize();
     FILE* fileptr = fopen(FILE_NAME, "r+b");
     
+    if (!fileptr) {
+
+        fileNotOpenedError;
+
+    }
+    
     for (int i = 0; i < size; i++) {
         
         int offset = i * sizeof(Task);
@@ -43,10 +51,16 @@ void addTaskToFile(Task newTaskStruct) {
         fread(&flag, sizeof(flag), 1, fileptr);
         
         if (flag) {
-            
+
             fseek(fileptr, offset, SEEK_SET);
-            fwrite(&newTaskStruct, sizeof(Task), 1, fileptr);
-            printf("a");
+            
+            if (verbose) {
+
+                printf("\nOverwriting at free position %d", ftell(fileptr));
+
+            }            
+           
+             fwrite(&newTaskStruct, sizeof(Task), 1, fileptr);
             fclose(fileptr);
             return;            
 
@@ -54,11 +68,14 @@ void addTaskToFile(Task newTaskStruct) {
 
     }
 
-    printf("Writing at position %d", ftell(fileptr));
-
-    
-
     fseek(fileptr, 0L, SEEK_END);
+    
+    if (verbose) {
+    
+        printf("\nWriting at position %d", ftell(fileptr));
+
+    }
+
     fwrite(&newTaskStruct,  sizeof(Task), 1, fileptr);
     fclose(fileptr);
     return;
