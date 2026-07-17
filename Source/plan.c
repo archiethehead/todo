@@ -10,10 +10,12 @@ extern int optind;
 void newtask(int argc, char** argv) {
 
     int opt;
+    uint8_t isDateSet = 0;
     char* taskName = NULL;
     char* taskAssignee = "Everyone";
     char* taskCategory = "N/A";
-    struct tm time = {0}; 
+    struct tm time = {0};
+    
     time.tm_isdst = -1;
 
     argv += 2;
@@ -23,7 +25,7 @@ void newtask(int argc, char** argv) {
 
     char* args[] = {"task", "help", "newtodo"};
 
-    while((opt = getopt(argc, argv, "n:c::d::t::a::v")) != -1) {
+    while((opt = getopt(argc, argv, "n:c::d:t::a::v")) != -1) {
 
         if (verbose) {
     
@@ -57,7 +59,8 @@ void newtask(int argc, char** argv) {
                 
                 int year, month, day;
                 if(sscanf(optarg, "%d-%d-%d", &day, &month, &year) == 3) {
-    
+                    
+                    isDateSet = 1;
                     time.tm_year = year - 1900;
                     time.tm_mon = month - 1;
                     time.tm_mday =  day;
@@ -77,7 +80,7 @@ void newtask(int argc, char** argv) {
                 int hours, minutes;
                 if (sscanf(optarg, "%d:%d", &hours, &minutes) == 2) {
 
-                     time.tm_hour = hours;
+                    time.tm_hour = hours;
                     time.tm_min = minutes;
                     break;
 
@@ -119,17 +122,24 @@ void newtask(int argc, char** argv) {
 
     }
     
-    time_t epochTime = mktime(&time);
-   
+    time_t epochTime = 0;
+    Task newTaskStruct;
+    newTaskStruct.status = INDEFINITE;
+
+    if (isDateSet) {
+
+        time_t epochTime = mktime(&time);
+        newTaskStruct.status = TAKEN;
+
+    }
+
     if (verbose) {
         
         printf("\nArguments parsed:\nName -> %s \nAssignee -> %s \nCategory -> %s \nDeadline -> %s", taskName, taskCategory, taskAssignee, ctime(&epochTime));
 
     }
 
-    Task newTaskStruct;
-    newTaskStruct.status = TAKEN;
-    newTaskStruct.id = 5;
+    newTaskStruct.id = 0;
     newTaskStruct.timestamp = epochTime;
     strcpy(newTaskStruct.title, taskName);
     strcpy(newTaskStruct.assignee, taskAssignee);
@@ -143,11 +153,12 @@ void newtask(int argc, char** argv) {
 
 strarg outputArgs[] =    {
 
-                                {"Free", 1},
-                                {"Active", 2},
-                                {"Completed", 3},
-                                {"Overdue", 4},
-                                {"*", 0}
+                                {"Free", FREE},
+                                {"Active", TAKEN},
+                                {"Completed", COMPLETED},
+                                {"Overdue", OVERDUE},
+                                {"Indefinite", INDEFINITE},
+                                {"*", ALL}
 
                          };
 
@@ -213,7 +224,7 @@ void outputTasks(int argc, char** argv) {
 
     }
     
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 6; i++) {
 
         if(strequal(filter, outputArgs[i].str)) {
 
@@ -232,7 +243,7 @@ void outputTasks(int argc, char** argv) {
 
 void help(int argc, char** argv) {
 
-    puts("\nCOMMANDS\n--------\n\n<> = Mandatory Argument(s)\n[] = Optional Argument(s)\nArguments are not case-sensitive.\nArguments are order-sensitive.\n");
+    puts("\nCOMMANDS\n--------\n\n<> = Mandatory Argument(s)\n[] = Optional Argument(s)\nArguments are case-sensitive\nCommand arguments are not order-sensitive\n");
     
     char error[] = "ERROR";
 

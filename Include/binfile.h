@@ -9,13 +9,16 @@
 #define TEXT_SIZE 64
 
 // Definitions for thes states of
-// the task struct state flag.
+// the task struct state flag.i
+#define ALL 0
 #define FREE 1
 #define TAKEN 2
 #define COMPLETED 3
 #define OVERDUE 4
+#define INDEFINITE 5
 
 extern uint8_t idBitmap[1024];
+extern int idCount;
 
 #define SET_ID(id) (idBitmap[id >> 3] |= (1 << (id & 7)))
 #define SET_ID(id) (idBitmap[id >> 3] |= (1 << (id & 7)))

@@ -6,12 +6,14 @@
 char fileNotOpened[] = "ERROR ---> Tasks file could not be opened :("; 
 
 uint8_t idBitmap[1024] = {0};
+int idCount = 0;
 
 void initBinFile() {
 
     FILE* fileptr;
     fileptr = fopen(FILE_NAME, "w");
     fclose(fileptr);
+    return;
 
 }
 
@@ -95,20 +97,22 @@ void addTaskToFile(Task newTaskStruct) {
         
         int offset = i * sizeof(Task);
         fseek(fileptr, offset, SEEK_SET);
-        unsigned char flag;
-        fread(&flag, sizeof(flag), 1, fileptr);
+        Task taskBuff;
+        fread(&taskBuff, sizeof(Task), 1, fileptr);
         
-        if (!flag) {
-
+        if (taskBuff.status == 1) {
+   
+            newTaskStruct.id = taskBuff.id;
             fseek(fileptr, offset, SEEK_SET);
             
             if (verbose) {
-
+                
+                printf("\nReusing id 0x%x", taskBuff.id);
                 printf("\nOverwriting at free position %d", ftell(fileptr));
 
             }            
-           
-             fwrite(&newTaskStruct, sizeof(Task), 1, fileptr);
+            
+            fwrite(&newTaskStruct, sizeof(Task), 1, fileptr);
             fclose(fileptr);
             return;            
 
@@ -179,11 +183,29 @@ void outputAllTasks(char* status, uint8_t flag) {
             case OVERDUE:
                 strcpy(status, "Overdue");
                 break;
+    
+            case INDEFINITE:
+                strcpy(status, "Indefinite");
+                break;
 
-        }   
+        }
 
-        printf("\n\n%s\nID --> %d \nCategory --> %s \nAssignee --> %s \nDeadline --> %sStatus ---> %s",
-                taskBuff.title, taskBuff.id, taskBuff.category, taskBuff.assignee, ctime(&taskBuff.timestamp), status);
+        char time[20];     
+
+        if (taskBuff.timestamp > 0) {
+
+            strcpy(time, ctime(&taskBuff.timestamp));    
+
+        }
+
+        else {
+
+            strcpy(time, "N/A\n");
+
+        }
+
+        printf("\n\n%s\nID --> %d \nCategory --> %s \nAssignee --> %s \nDeadline --> %sStatus   --> %s",
+                taskBuff.title, taskBuff.id, taskBuff.category, taskBuff.assignee, time, status);
 
     }
 
@@ -191,3 +213,4 @@ void outputAllTasks(char* status, uint8_t flag) {
     return;
 
 } 
+

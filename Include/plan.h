@@ -8,9 +8,9 @@
 #include <stdlib.h>
 #include <getopt/getopt.h>
 
-void help(int argc, char** argv);
-void newtask(int argc, char** argv);
-void outputTasks(int argc, char** argv);
+extern void help(int argc, char** argv);
+extern void newtask(int argc, char** argv);
+extern void outputTasks(int argc, char** argv);
 
 typedef struct {
 
