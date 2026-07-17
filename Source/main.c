@@ -3,7 +3,22 @@
 #include <plan.h>
 #include <binfile.h>
 
+int verbose = 0;
+
 int main(int argc, char* argv[]) {
+
+
+    for (int i = 1; i < argc; i++) {
+    
+        if (strequal(argv[i], "-v")) {
+    
+            verbose = 1;
+            break;
+        
+        }
+    
+    }   
+ 
     
     if (!argc) return 1;
 

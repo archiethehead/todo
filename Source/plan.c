@@ -2,10 +2,10 @@
 #include <binfile.h>
 #include <arghandler.h>
 
-int verbose = 0;
-
 extern char *optarg;
 extern int optind;
+
+extern int verbose;
 
 void newtask(int argc, char** argv) {
 
@@ -102,10 +102,6 @@ void newtask(int argc, char** argv) {
 
                 }
                 break;
-
-            case 'v':
-                verbose = 1;
-                break;
             
             case '?':
                 help(3, args);
@@ -126,8 +122,6 @@ void newtask(int argc, char** argv) {
     time_t epochTime = 0;
     Task newTaskStruct;
     newTaskStruct.status = INDEFINITE;
-
-    printf("%d", isDateSet);
 
     if (isDateSet) {
 
@@ -357,10 +351,6 @@ void editTask(int argc, char** argv) {
                 }
                 break;
 
-            case 'v':
-                verbose = 1;
-                break;
-            
             case '?':
                 help(3, args);
                 return;

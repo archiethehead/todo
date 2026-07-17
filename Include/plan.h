@@ -14,6 +14,8 @@ extern void editTask(int argc, char** argv);
 extern void changeTaskStatus(int argc, char** argv);
 extern void outputTasks(int argc, char** argv);
 
+extern int verbose;
+
 typedef struct {
 
     char* str;

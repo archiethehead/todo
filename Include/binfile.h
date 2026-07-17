@@ -53,6 +53,8 @@ typedef enum{
 
 extern void initBinFile();
 extern void addTaskToFile(Task newTask);
+extern int getTaskByID(uint16_t id, Task* taskBuffer);
+extern void saveTaskByID(uint16_t id, Task newTaskData);
 extern void outputAlltasks();
 extern void outputActivetasks();
 extern int verbose;

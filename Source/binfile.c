@@ -12,6 +12,12 @@ int idCount = 0;
 
 void initBinFile() {
 
+    if (verbose) {
+
+        printf("Created new %s file.", FILE_NAME);
+
+    }
+
     FILE* fileptr;
     fileptr = fopen(FILE_NAME, "w");
     fclose(fileptr);
@@ -55,6 +61,12 @@ void updateBinFile() {
 
         if (status == 2 && taskTime < seconds) {
 
+            if (verbose) {
+
+                printf("Deadline expired for task 0x%d", taskFileBuffer[i].id);
+
+            }
+
             status = OVERDUE;
             taskFileBuffer[i].status = OVERDUE;
             int offset = (i * sizeof(Task)) + OFFSET(Task, status);
@@ -64,6 +76,9 @@ void updateBinFile() {
         }
 
         else if (status == 1 && taskTime > seconds) {
+
+
+            printf("Overdue revoked for task 0x%d", taskFileBuffer[i].id);
 
             status = TAKEN;
             taskFileBuffer[i].status = TAKEN;
@@ -104,6 +119,13 @@ int getTaskByID(uint16_t id, Task* taskBuffer) {
     if (id >= size) goto fail;
 
     fseek(fileptr, 0, SEEK_SET);
+    
+    if (verbose) {
+    
+        printf("Reading at position 0x%x", ftell(fileptr));
+
+    }
+
     fread(taskFileBuffer, sizeof(Task), size, fileptr);
     
     Task targetTask = taskFileBuffer[id];
@@ -145,11 +167,6 @@ void saveTaskByID(uint16_t id, Task newTaskData) {
 
     fclose(fileptr);
     return;
-
-
-}
-
-void editTaskDetails(uint16_t id, taskAddress address, void* newData) {
 
 
 }
@@ -233,12 +250,6 @@ void addTaskToFile(Task newTaskStruct) {
 void outputAllTasks(char* status, uint8_t flag) {
     
     printf("\n\n%s tasks:\n", status);
-
-    for (int i = 0; i < 10; i++) {
-
-        printf("%d", idBitmap[i]);
-
-    }
 
     int size = getBinFileSize();
     FILE* fileptr = fopen(FILE_NAME, "r+b");
