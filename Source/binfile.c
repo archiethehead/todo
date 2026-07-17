@@ -47,13 +47,11 @@ void updateBinFile() {
 
     for (int i = 0; i < size; i++) {
     
+        SET_ID(idCount);
         idCount++;
-
 
         uint8_t status = taskFileBuffer[i].status;
         time_t taskTime = taskFileBuffer[i].timestamp;
-        
-        idBitmap[taskFileBuffer[i].id] = 1;
 
         if (status == 2 && taskTime < seconds) {
 
@@ -213,13 +211,19 @@ void addTaskToFile(Task newTaskStruct) {
     }
 
     fseek(fileptr, 0L, SEEK_END);
-    
+
+    newTaskStruct.id = idCount;
+
     if (verbose) {
-    
+
+        printf("Allocating id 0x%x", idCount);    
         printf("\nWriting at position 0x%x", ftell(fileptr));
 
     }
 
+    SET_ID(idCount);
+    idCount++;
+    
     fwrite(&newTaskStruct,  sizeof(Task), 1, fileptr);
     fclose(fileptr);
     return;
@@ -229,6 +233,12 @@ void addTaskToFile(Task newTaskStruct) {
 void outputAllTasks(char* status, uint8_t flag) {
     
     printf("\n\n%s tasks:\n", status);
+
+    for (int i = 0; i < 10; i++) {
+
+        printf("%d", idBitmap[i]);
+
+    }
 
     int size = getBinFileSize();
     FILE* fileptr = fopen(FILE_NAME, "r+b");
