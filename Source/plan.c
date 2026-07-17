@@ -14,7 +14,8 @@ void newtask(int argc, char** argv) {
     char* taskName = NULL;
     char* taskAssignee = "Everyone";
     char* taskCategory = "N/A";
-    struct tm time = {0};
+    time_t raw_time = time(NULL);
+    struct tm time = *(localtime(&raw_time));
     
     time.tm_isdst = -1;
 
@@ -126,9 +127,12 @@ void newtask(int argc, char** argv) {
     Task newTaskStruct;
     newTaskStruct.status = INDEFINITE;
 
+    printf("%d", isDateSet);
+
     if (isDateSet) {
 
-        time_t epochTime = mktime(&time);
+        printf("b");
+        epochTime = mktime(&time);
         newTaskStruct.status = TAKEN;
 
     }
@@ -240,6 +244,141 @@ void outputTasks(int argc, char** argv) {
     return;
 
 }
+
+void editTask(int argc, char** argv) {
+
+    int opt;
+    int id = atoi(argv[2]);
+    uint8_t isDateSet = 0;
+    time_t raw_time = time(NULL);
+    struct tm time = *(localtime(&raw_time));
+    
+    time.tm_isdst = -1;
+
+    if (!(strequal(argv[2], "0")) && id == 0) {
+
+        printf("ERROR ---> Character found where integer was expected :(");
+        return;
+
+    }
+
+    Task editTaskDetails;
+    int success = getTaskByID(id, &editTaskDetails); 
+
+    if (!success) {
+
+        printf("ERROR ---> Invalid id entered :(");
+        return;
+
+    }
+
+    argv += 3;
+    argc -= 3;
+
+    optind = 0;    
+
+    char* args[] = {"task", "help", "newtodo"};
+
+    while((opt = getopt(argc, argv, "n::c::d:t::a::v")) != -1) {
+
+        if (verbose) {
+    
+            printf("Parsing %c as %s\n", opt, optarg);
+
+        }
+        
+        switch(opt) {
+
+            case 'n':
+
+                if (optarg) {
+
+                    strcpy(editTaskDetails.title, optarg);
+
+                }
+
+                break;
+            
+            case 'c':
+            
+                if (optarg) {
+                    
+                    strcpy(editTaskDetails.category, optarg);
+                
+                }
+
+                break;
+
+            case 'd':
+                
+                int year, month, day;
+                if(sscanf(optarg, "%d-%d-%d", &day, &month, &year) == 3) {
+                    
+                    isDateSet = 1;
+                    time.tm_year = year - 1900;
+                    time.tm_mon = month - 1;
+                    time.tm_mday =  day;
+                    break;
+
+                }
+
+                else {
+
+                    printf("ERROR ---> Invalid date format entered, dd-mm-yyyy was expected :(");
+                    return;
+        
+                }
+                
+            case 't':
+                
+                int hours, minutes;
+                if (sscanf(optarg, "%d:%d", &hours, &minutes) == 2) {
+
+                    isDateSet = 1;
+                    time.tm_hour = hours;
+                    time.tm_min = minutes;
+                    break;
+
+                }
+
+                else {
+
+                    printf("ERROR ---> Invalid time format entered, hh:mm was expected :(");                    
+                    return;    
+
+                }
+
+            case 'a':
+
+                if (optarg) {
+
+                    strcpy(editTaskDetails.assignee, optarg);
+
+                }
+                break;
+
+            case 'v':
+                verbose = 1;
+                break;
+            
+            case '?':
+                help(3, args);
+                return;
+
+        }
+
+    }
+
+    if (isDateSet) {
+
+        editTaskDetails.timestamp = mktime(&time);
+
+    }
+    
+    saveTaskByID(id, editTaskDetails);
+
+    return;
+};
 
 void help(int argc, char** argv) {
 

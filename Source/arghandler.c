@@ -4,7 +4,8 @@ const argcommand argcommands[] =    {
 
                                     {"help",    "[command name(s)] Outputs the details of a command(s) this program can execute", &help},
                                     {"newtodo", "<-n name> [-c category, -d dd-mm-yy, -t hh:mm -a assignee] writes a task to the database according to your input value(s)", &newtask},
-                                    {"todoout","[-f status] outputs all of the tasks saved to file according to the optionally specified filter.", &outputTasks}
+                                    {"todoout","[-f status] outputs all of the tasks saved to file according to the optionally specified filter.", &outputTasks},
+                                    {"edit", "temp", &editTask}
 
                                     };
 

@@ -40,6 +40,17 @@ typedef struct {
 
 #pragma pack(pop)
 
+typedef enum{
+
+    status = 0,
+    id = OFFSET(Task, timestamp),
+    title = OFFSET(Task, title),
+    assignee = OFFSET(Task, assignee),
+    category = OFFSET(Task, category)
+
+} taskAddress;
+
+
 extern void initBinFile();
 extern void addTaskToFile(Task newTask);
 extern void outputAlltasks();

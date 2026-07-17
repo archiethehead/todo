@@ -2,8 +2,10 @@
 
 #define FILE_NAME "Tasks.bin"
 #define fileNotOpenedError printf("%s", fileNotOpened)
+#define insufficientMemoryError printf("%s", insufficientMemory);
 
 char fileNotOpened[] = "ERROR ---> Tasks file could not be opened :("; 
+char insufficientMemory[] = "ERROR ---> Insufficient memory for allocation :(";
 
 uint8_t idBitmap[1024] = {0};
 int idCount = 0;
@@ -20,20 +22,23 @@ void initBinFile() {
 void updateBinFile() {
 
     int size = getBinFileSize();
-
-    if (size == -1) return;
-   
+    FILE* fileptr = fopen(FILE_NAME, "r+b"); 
     Task* taskFileBuffer = (Task*)malloc(sizeof(Task) * size);    
     
-    FILE* fileptr = fopen(FILE_NAME, "r+b");
-
-    if (!fileptr) {
-
+    if (!fileptr || size == -1) {
+    
         fileNotOpenedError;
         return;
 
     }
 
+    if (taskFileBuffer == NULL) {
+
+        insufficientMemoryError;
+        return;
+
+    }
+    
     fseek(fileptr, 0, SEEK_SET);
     fread(taskFileBuffer, sizeof(Task), size, fileptr);
 
@@ -41,9 +46,18 @@ void updateBinFile() {
     time(&seconds);
 
     for (int i = 0; i < size; i++) {
+    
+        idCount++;
+
 
         uint8_t status = taskFileBuffer[i].status;
         time_t taskTime = taskFileBuffer[i].timestamp;
+        
+        if (status != 1) {
+
+           idBitmap[taskFileBuffer[i].id] = 1; 
+
+        }
 
         if (status == 2 && taskTime < seconds) {
 
@@ -63,13 +77,85 @@ void updateBinFile() {
 
 }
 
+int getTaskByID(uint16_t id, Task* taskBuffer) {
+
+    FILE* fileptr = fopen(FILE_NAME, "rb");
+    int size = getBinFileSize();
+    Task* taskFileBuffer = (Task*)malloc(sizeof(Task) * size);
+    
+    if (!fileptr || size == -1) {
+
+        fileNotOpenedError;
+        exit(-1);
+
+    }
+
+    if (taskFileBuffer == NULL) {
+
+        insufficientMemoryError;
+        exit(-1);
+
+    }
+
+    if (id > size) goto fail;
+
+    fseek(fileptr, 0, SEEK_SET);
+    fread(taskFileBuffer, sizeof(Task), size, fileptr);
+    
+    Task targetTask = taskFileBuffer[id];
+    if (targetTask.status == FREE) goto fail;
+
+    memcpy(taskBuffer, &targetTask, sizeof(Task));
+    free(taskFileBuffer);
+    return 1;
+
+    fail:
+        free(taskFileBuffer);
+        return 0;
+
+}
+
+void saveTaskByID(uint16_t id, Task newTaskData) {
+
+    FILE* fileptr = fopen(FILE_NAME, "r+b");
+    int size = getBinFileSize();
+    
+    if (!fileptr || size == -1) {
+
+        fileNotOpenedError;
+        exit(-1);
+
+    }
+
+    int offset = sizeof(Task) * id;
+
+    fseek(fileptr, offset, SEEK_SET);
+  
+    if (verbose) {
+
+        printf("\nOverwriting at position %d", ftell(fileptr));
+
+    }
+
+    fwrite(&newTaskData, sizeof(Task), 1, fileptr);
+
+    fclose(fileptr);
+    return;
+
+
+}
+
+void editTaskDetails(uint16_t id, taskAddress address, void* newData) {
+
+
+}
+
 int getBinFileSize() {
 
     FILE* fileptr = fopen(FILE_NAME, "rb");
     
     if (!fileptr) {
 
-        fileNotOpenedError;
         return -1;
 
     }
@@ -87,7 +173,7 @@ void addTaskToFile(Task newTaskStruct) {
     int size = getBinFileSize();
     FILE* fileptr = fopen(FILE_NAME, "r+b");
     
-    if (!fileptr) {
+    if (!fileptr || size == -1) {
 
         fileNotOpenedError;
 
@@ -141,9 +227,10 @@ void outputAllTasks(char* status, uint8_t flag) {
     int size = getBinFileSize();
     FILE* fileptr = fopen(FILE_NAME, "r+b");
     
-    if (!fileptr) {
+    if (!fileptr || size == -1) {
 
         fileNotOpenedError;
+        return;
 
     }
 
@@ -190,7 +277,7 @@ void outputAllTasks(char* status, uint8_t flag) {
 
         }
 
-        char time[20];     
+        char time[30];    
 
         if (taskBuff.timestamp > 0) {
 
