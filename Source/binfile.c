@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <binfile.h>
 
 #define FILE_NAME "Tasks.bin"
@@ -18,7 +17,47 @@ void initBinFile() {
 
 void updateBinFile() {
 
+    int size = getBinFileSize();
+
+    if (size == -1) return;
+   
+    Task* taskFileBuffer = (Task*)malloc(sizeof(Task) * size);    
     
+    FILE* fileptr = fopen(FILE_NAME, "r+b");
+
+    if (!fileptr) {
+
+        fileNotOpenedError;
+        return;
+
+    }
+
+    fseek(fileptr, 0, SEEK_SET);
+    fread(taskFileBuffer, sizeof(Task), size, fileptr);
+
+    time_t seconds;
+    time(&seconds);
+
+    for (int i = 0; i < size; i++) {
+
+        uint8_t status = taskFileBuffer[i].status;
+        time_t taskTime = taskFileBuffer[i].timestamp;
+
+        if (status == 2 && taskTime < seconds) {
+
+            status = OVERDUE;
+            taskFileBuffer[i].status = OVERDUE;
+            int offset = (i * sizeof(Task)) + OFFSET(Task, status);
+            fseek(fileptr, offset, SEEK_SET);
+            fwrite(&status,  sizeof(status), 1, fileptr);
+
+        }
+
+    }
+
+    fclose(fileptr);
+    free(taskFileBuffer);
+    return;    
 
 }
 
@@ -33,9 +72,10 @@ int getBinFileSize() {
 
     }
 
-    fseek(fileptr, 0L, SEEK_END);
+    fseek(fileptr, 0, SEEK_END);
     long int size = ftell(fileptr);
     size = size / sizeof(Task);
+    fclose(fileptr);
     return size;
 
 }
@@ -147,6 +187,7 @@ void outputAllTasks(char* status, uint8_t flag) {
 
     }
 
+    fclose(fileptr);
     return;
 
 } 

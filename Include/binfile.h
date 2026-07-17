@@ -1,6 +1,7 @@
 #ifndef BINFILE_H
 #define BINFILE_H
 
+#include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <time.h>
@@ -19,6 +20,7 @@ extern uint8_t idBitmap[1024];
 #define SET_ID(id) (idBitmap[id >> 3] |= (1 << (id & 7)))
 #define SET_ID(id) (idBitmap[id >> 3] |= (1 << (id & 7)))
 #define UNSET_ID(id) (idBitmap[id >> 3] &= ~(1 << (id & 7)))
+#define OFFSET(type, member) ((size_t)&(((type *)0)->member))
 
 #pragma pack(push, 1)
 

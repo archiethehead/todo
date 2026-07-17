@@ -146,7 +146,8 @@ strarg outputArgs[] =    {
                                 {"Free", 1},
                                 {"Active", 2},
                                 {"Completed", 3},
-                                {"Overdue", 4}
+                                {"Overdue", 4},
+                                {"*", 0}
 
                          };
 
@@ -211,8 +212,8 @@ void outputTasks(int argc, char** argv) {
             filter[0] -= 32;
 
     }
- 
-    for (int i = 0; i < 4; i++) {
+    
+    for (int i = 0; i < 5; i++) {
 
         if(strequal(filter, outputArgs[i].str)) {
 
