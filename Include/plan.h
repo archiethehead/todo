@@ -11,6 +11,7 @@
 extern void help(int argc, char** argv);
 extern void newtask(int argc, char** argv);
 extern void editTask(int argc, char** argv);
+extern void changeTaskStatus(int argc, char** argv);
 extern void outputTasks(int argc, char** argv);
 
 typedef struct {

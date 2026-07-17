@@ -380,6 +380,49 @@ void editTask(int argc, char** argv) {
     return;
 };
 
+void changeTaskStatus(int argc, char** argv) {
+
+    toLower(argv[1]);
+    int id = atoi(argv[2]);
+    uint8_t status;    
+
+    if (strequal(argv[1], "done")) {
+
+        status = COMPLETED;
+
+    }
+
+    else if (strequal(argv[1], "delete")) {
+
+        status = FREE;
+
+    }
+
+    if (!(strequal(argv[2], "0")) && id == 0) {
+
+        printf("ERROR ---> Character found where integer was expected :(");
+        return;
+
+    }
+
+    Task editTaskBuffer;
+    int success = getTaskByID(id, &editTaskBuffer);
+    
+    if (!success) {
+
+        printf("ERROR ---> Invalid id entered :(");
+        return;
+
+    }
+
+    editTaskBuffer.status = status;
+    
+    saveTaskByID(id, editTaskBuffer);
+
+    return;
+
+};
+
 void help(int argc, char** argv) {
 
     puts("\nCOMMANDS\n--------\n\n<> = Mandatory Argument(s)\n[] = Optional Argument(s)\nArguments are case-sensitive\nCommand arguments are not order-sensitive\n");

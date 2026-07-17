@@ -53,16 +53,22 @@ void updateBinFile() {
         uint8_t status = taskFileBuffer[i].status;
         time_t taskTime = taskFileBuffer[i].timestamp;
         
-        if (status != 1) {
-
-           idBitmap[taskFileBuffer[i].id] = 1; 
-
-        }
+        idBitmap[taskFileBuffer[i].id] = 1;
 
         if (status == 2 && taskTime < seconds) {
 
             status = OVERDUE;
             taskFileBuffer[i].status = OVERDUE;
+            int offset = (i * sizeof(Task)) + OFFSET(Task, status);
+            fseek(fileptr, offset, SEEK_SET);
+            fwrite(&status,  sizeof(status), 1, fileptr);
+
+        }
+
+        else if (status == 1 && taskTime > seconds) {
+
+            status = TAKEN;
+            taskFileBuffer[i].status = TAKEN;
             int offset = (i * sizeof(Task)) + OFFSET(Task, status);
             fseek(fileptr, offset, SEEK_SET);
             fwrite(&status,  sizeof(status), 1, fileptr);
@@ -97,7 +103,7 @@ int getTaskByID(uint16_t id, Task* taskBuffer) {
 
     }
 
-    if (id > size) goto fail;
+    if (id >= size) goto fail;
 
     fseek(fileptr, 0, SEEK_SET);
     fread(taskFileBuffer, sizeof(Task), size, fileptr);
@@ -258,6 +264,10 @@ void outputAllTasks(char* status, uint8_t flag) {
         char status[11];
 
         switch(taskBuff.status) {
+
+            case FREE:
+                strcpy(status, "Free");
+                break;
 
             case TAKEN:
                 strcpy(status, "Active");
