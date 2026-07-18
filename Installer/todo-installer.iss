@@ -60,9 +60,6 @@ Name: addToPath; Description: "Add todo.exe to PATH (recommended)"; Flags: unche
 [Registry]
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata}{app}"; Check: PathNotExists
     
-[Run]
-Filename: "{app}\Readme.md"; Description: "Open project README on finish"; Flags: postinstall shellexec skipifsilent
-    
 [Code]
 function PathNotExists(): Boolean;
   
