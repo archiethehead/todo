@@ -3,7 +3,7 @@ A 'task' manager that strips away the old writing 'todo: ...' somewhere in your 
 
 
 ## Installation
-The source, executable, and Windows installer for this application can be found on the release page. Alternatively, you can clone the repository, and with a copy of MSVC, running 'build.bat' will create the application for you in the ".\Build\" folder. The commmand for cloning can be found below.
+The source, executables (x86-x64, Windows and Linux), and Windows installer for this application can be found on the release page. Alternatively, you can clone the repository, and with a copy of MSVC, running 'build.bat' will create the application for you in the ".\Build\" folder. Alternatively, with a copy of GCC on Linux, build.sh can be used to build the project. The commmand for cloning can be found below.
 > git clone https://github.com/archiethehead/todo
 
 
@@ -14,7 +14,6 @@ Below is a list of commands and some guidelines for using them:
 [] = Optional Argument(s)\
 Arguments are case-sensitive\
 Command arguments are not order-sensitive\
-
 
 help     ---> [command name(s)] Outputs the details of a command(s) this program can execute.\
 newtodo  ---> <-n name> [-c category, -dd-mm-yy, -t hh:mm -a assignee] writes a task to the database according to your input value(s).\

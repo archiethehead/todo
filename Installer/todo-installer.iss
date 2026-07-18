@@ -49,6 +49,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 Source: ".\..\Build\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\..\README.md";  DestDir: "{app}"; Flags: isreadme
+Source: ".\..\LICENSE"; DestDir: "{app}";
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
