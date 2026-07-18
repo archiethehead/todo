@@ -58,7 +58,7 @@ Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: addToPath; Description: "Add todo.exe to PATH (recommended)"; Flags: unchecked
 
 [Registry]
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata}{app}"; Check: PathNotExists
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata}{app};"; Check: PathNotExists
     
 [Code]
 function PathNotExists(): Boolean;
