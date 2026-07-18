@@ -10,7 +10,7 @@ void initBinFile() {
 
     if (verbose) {
 
-        printf("Created new %s file.", FILE_NAME);
+        printf("Created new %s file.\n", FILE_NAME);
 
     }
 
@@ -59,7 +59,7 @@ void updateBinFile() {
 
             if (verbose) {
 
-                printf("Deadline expired for task 0x%d", taskFileBuffer[i].id);
+                printf("Deadline expired for task 0x%d\n", taskFileBuffer[i].id);
 
             }
 
@@ -71,10 +71,10 @@ void updateBinFile() {
 
         }
 
-        else if (status == 1 && taskTime > seconds) {
+        else if (status == 4 && taskTime > seconds) {
 
 
-            printf("Overdue revoked for task 0x%d", taskFileBuffer[i].id);
+            printf("Overdue revoked for task 0x%d\n", taskFileBuffer[i].id);
 
             status = TAKEN;
             taskFileBuffer[i].status = TAKEN;
@@ -118,7 +118,7 @@ int getTaskByID(uint16_t id, Task* taskBuffer) {
     
     if (verbose) {
     
-        printf("Reading at position 0x%x", ftell(fileptr));
+        printf("Reading at position 0x%x\n", ftell(fileptr));
 
     }
 
@@ -211,8 +211,8 @@ void addTaskToFile(Task newTaskStruct) {
             
             if (verbose) {
                 
-                printf("\nReusing id 0x%x", taskBuff.id);
-                printf("\nOverwriting at free position %d", ftell(fileptr));
+                printf("\nReusing id 0x%x\n", taskBuff.id);
+                printf("\nOverwriting at free position %d\n", ftell(fileptr));
 
             }            
             
@@ -230,8 +230,8 @@ void addTaskToFile(Task newTaskStruct) {
 
     if (verbose) {
 
-        printf("Allocating id 0x%x", idCount);    
-        printf("\nWriting at position 0x%x", ftell(fileptr));
+        printf("Allocating id 0x%x\n", idCount);    
+        printf("\nWriting at position 0x%x\n", ftell(fileptr));
 
     }
 
@@ -266,7 +266,7 @@ void outputAllTasks(char* status, uint8_t flag) {
         
         if (verbose) {
 
-            printf("\n\nReading at position 0x%x", ftell(fileptr));
+            printf("\n\nReading at position 0x%x\n", ftell(fileptr));
 
         }
 
