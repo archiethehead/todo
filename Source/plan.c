@@ -2,9 +2,6 @@
 #include <binfile.h>
 #include <arghandler.h>
 
-extern char *optarg;
-extern int optind;
-
 extern int verbose;
 
 void newtask(int argc, char** argv) {
@@ -165,14 +162,19 @@ void outputTasks(int argc, char** argv) {
     int opt;
     char* filter = NULL;
 
-    argv += 2;
+	argv += 2;
     argc -= 2;
-
-    optind = 0;    
+	optind = 0;
 
     char* args[] = {"task", "help", "todoout"};
 
     while((opt = getopt(argc, argv, "f::v")) != -1) {
+
+		if (optind == 1) {
+
+			continue;
+
+		}
 
         if (verbose) {
     
@@ -384,6 +386,12 @@ void changeTaskStatus(int argc, char** argv) {
     else if (strequal(argv[1], "delete")) {
 
         status = FREE;
+
+    }
+
+    else if (strequal(argv[1], "redo")) {
+
+        status = TAKEN;
 
     }
 

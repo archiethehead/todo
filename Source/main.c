@@ -56,10 +56,12 @@ int main(int argc, char* argv[]) {
 
     if (!recognisedCommand) {
 
-        printf("ERROR ---> %s is not a recognised command :(\nTry 'todo help.'", argv[1]);
+        printf("ERROR ---> %s is not a recognised command :(\nTry 'todo help.\n'", argv[1]);
         return -1;
 
     }
+
+    puts("\n");
     
     return 0;
 

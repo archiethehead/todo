@@ -8,6 +8,7 @@ const argcommand argcommands[] =    {
 {"edit", "<id> [-n name, -c category,-dd-mm-yy, -t hh:mm -a assignee] edits an existing record saved to the disk.", &editTask},
 {"done", "<id> marks a task as completed.", &changeTaskStatus},
 {"delete", "<id> marks a task as deleted, and free to be written over", &changeTaskStatus},
+{"redo", "<id> marks a task  as active.", &changeTaskStatus},
 {"version", "Displays version information for your copy of todo", &version}
 
                                     };

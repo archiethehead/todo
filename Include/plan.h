@@ -7,6 +7,17 @@
 #include <stdint.h>
 #include <getopt/getopt.h>
 
+// Do NOT change this, this prevents Linux builds
+// from linking the stdlib version of getopt,  which
+// doesn't behave how the program expects our version
+// of getopt to behave.
+// 
+// |
+// |
+// |
+// V
+
+#define getopt winGetopt
 #define VERSION "1.0.0"
 
 extern void help(int argc, char** argv);

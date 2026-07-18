@@ -1,7 +1,7 @@
 #include <binfile.h>
 
-char fileNotOpened[] = "ERROR ---> Tasks file could not be opened :("; 
-char insufficientMemory[] = "ERROR ---> Insufficient memory for allocation :(";
+char fileNotOpened[] = "ERROR ---> Tasks file could not be opened :(\n"; 
+char insufficientMemory[] = "ERROR ---> Insufficient memory for allocation :(\n";
 
 uint8_t idBitmap[1024] = {0};
 int idCount = 0;
