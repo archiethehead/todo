@@ -13,7 +13,7 @@ Below is a list of commands and some guidelines for using them:
 <> = Mandatory Argument(s)\
 [] = Optional Argument(s)\
 Arguments are case-sensitive\
-Command arguments are not order-sensitive\
+Command arguments are not order-sensitive
 
 help     ---> [command name(s)] Outputs the details of a command(s) this program can execute.\
 newtodo  ---> <-n name> [-c category, -dd-mm-yy, -t hh:mm -a assignee] writes a task to the database according to your input value(s).\
@@ -22,7 +22,7 @@ edit     ---> <id> [-n name, -c category,-dd-mm-yy, -t hh:mm -a assignee] edits 
 done     ---> <id> marks a task as completed.\
 delete   ---> <id> marks a task as deleted, and free to be written over.\
 redo     ---> <id> marks a task as active.\
-version  ---> Displays version information for your copy of todo.\
+version  ---> Displays version information for your copy of todo.
 
 
 ## Contributors
