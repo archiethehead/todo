@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <stdio.h>
 #include <arghandler.h>
 #include <plan.h>
 #include <binfile.h>

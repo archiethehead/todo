@@ -1,7 +1,7 @@
-#include <plan.h>
-
 #ifndef ARGHANDLER_H
 #define ARGHANDLER_H
+
+#include <plan.h>
 
 #define strequal(x, y) !(strcmp(x, y))
 

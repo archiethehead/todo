@@ -125,7 +125,6 @@ void newtask(int argc, char** argv) {
 
     if (isDateSet) {
 
-        printf("b");
         epochTime = mktime(&time);
         newTaskStruct.status = TAKEN;
 
@@ -459,5 +458,11 @@ void help(int argc, char** argv) {
 
     puts("\n");
     return;
+
+}
+
+void version(int argc, char** argv) {
+
+    printf("\nTODO Version %s\n", VERSION);
 
 }

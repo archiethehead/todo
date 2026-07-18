@@ -1,9 +1,5 @@
 #include <binfile.h>
 
-#define FILE_NAME "Tasks.bin"
-#define fileNotOpenedError printf("%s", fileNotOpened)
-#define insufficientMemoryError printf("%s", insufficientMemory);
-
 char fileNotOpened[] = "ERROR ---> Tasks file could not be opened :("; 
 char insufficientMemory[] = "ERROR ---> Insufficient memory for allocation :(";
 
@@ -156,10 +152,11 @@ void saveTaskByID(uint16_t id, Task newTaskData) {
     int offset = sizeof(Task) * id;
 
     fseek(fileptr, offset, SEEK_SET);
-  
+
+ 
     if (verbose) {
 
-        printf("\nOverwriting at position %d", ftell(fileptr));
+        //printf("\nOverwriting at position 0x%x", ftell(fileptr));
 
     }
 
