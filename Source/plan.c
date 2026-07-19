@@ -385,6 +385,13 @@ void editTask(int argc, char** argv) {
 
         editTaskDetails.timestamp = mktime(&time);
 
+        if (editTaskDetails.status != 3) {
+
+            editTaskDetails.status = 2;
+
+        }
+        
+
     }
     
     saveTaskByID(id, editTaskDetails);
