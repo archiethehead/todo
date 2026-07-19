@@ -423,6 +423,13 @@ void changeTaskStatus(int argc, char** argv) {
 
     }
 
+    else if (strequal(argv[1], "indef")) {
+
+
+        status = INDEFINITE;
+
+    }
+
     if (!(strequal(argv[2], "0")) && id == 0) {
 
         printf("ERROR ---> Character found where integer was expected :(");
@@ -450,7 +457,7 @@ void changeTaskStatus(int argc, char** argv) {
 
 void help(int argc, char** argv) {
 
-    puts("\nCOMMANDS\n--------\n\n<> = Mandatory Argument(s)\n[] = Optional Argument(s)\nArguments are case-sensitive\nCommand arguments are not order-sensitive\n");
+    puts("\nCOMMANDS\n--------\n\n<> = Mandatory Argument(s)\n[] = Optional Argument(s)\nArguments are case-sensitive\nArguments are not order-sensitive if specified with a -flag\n");
     
     char error[] = "ERROR";
 

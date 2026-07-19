@@ -9,6 +9,7 @@ const argcommand argcommands[] =    {
 {"done", "<id> marks a task as completed.", &changeTaskStatus},
 {"delete", "<id> marks a task as deleted, and free to be written over", &changeTaskStatus},
 {"redo", "<id> marks a task  as active.", &changeTaskStatus},
+{"indef","<id> marks a task as indefinite.", &changeTaskStatus},
 {"version", "Displays version information for your copy of todo", &version}
 
                                     };
