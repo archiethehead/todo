@@ -5,6 +5,7 @@ char insufficientMemory[] = "ERROR ---> Insufficient memory for allocation :(\n"
 
 uint8_t idBitmap[1024] = {0};
 int idCount = 0;
+int writing = 0;
 
 void initBinFile() {
 
@@ -67,20 +68,29 @@ void updateBinFile() {
             taskFileBuffer[i].status = OVERDUE;
             int offset = (i * sizeof(Task)) + OFFSET(Task, status);
             fseek(fileptr, offset, SEEK_SET);
+            
+            WRITING;
             fwrite(&status,  sizeof(status), 1, fileptr);
+            NOTWRITING;
 
         }
 
         else if (status == 4 && taskTime > seconds) {
 
+            if (verbose) {
+            
+                printf("Overdue revoked for task 0x%d\n", taskFileBuffer[i].id);
 
-            printf("Overdue revoked for task 0x%d\n", taskFileBuffer[i].id);
+            }
 
             status = TAKEN;
             taskFileBuffer[i].status = TAKEN;
             int offset = (i * sizeof(Task)) + OFFSET(Task, status);
             fseek(fileptr, offset, SEEK_SET);
+
+            WRITING;
             fwrite(&status,  sizeof(status), 1, fileptr);
+            NOTWRITING;
 
         }
 
@@ -156,11 +166,13 @@ void saveTaskByID(uint16_t id, Task newTaskData) {
  
     if (verbose) {
 
-        //printf("\nOverwriting at position 0x%x", ftell(fileptr));
+        printf("\nOverwriting at position 0x%x\n", ftell(fileptr));
 
     }
 
+    WRITING;
     fwrite(&newTaskData, sizeof(Task), 1, fileptr);
+    NOTWRITING;
 
     fclose(fileptr);
     return;
@@ -216,7 +228,9 @@ void addTaskToFile(Task newTaskStruct) {
 
             }            
             
+            WRITING;
             fwrite(&newTaskStruct, sizeof(Task), 1, fileptr);
+            NOTWRITING;
             fclose(fileptr);
             return;            
 
@@ -238,7 +252,9 @@ void addTaskToFile(Task newTaskStruct) {
     SET_ID(idCount);
     idCount++;
     
+    WRITING;
     fwrite(&newTaskStruct,  sizeof(Task), 1, fileptr);
+    NOTWRITING;
     fclose(fileptr);
     return;
 
@@ -319,7 +335,7 @@ void outputAllTasks(char* status, uint8_t flag) {
 
         }
 
-        printf("\n\n%s\nID --> %d \nCategory --> %s \nAssignee --> %s \nDeadline --> %sStatus   --> %s",
+        printf("\n\n%s\nID       --> %d \nCategory --> %s \nAssignee --> %s \nDeadline --> %sStatus   --> %s",
                 taskBuff.title, taskBuff.id, taskBuff.category, taskBuff.assignee, time, status);
 
     }

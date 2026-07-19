@@ -10,6 +10,9 @@
 #define fileNotOpenedError printf("%s", fileNotOpened)
 #define insufficientMemoryError printf("%s", insufficientMemory);
 
+#define WRITING writing = 1
+#define NOTWRITING writing = 0
+
 #define TEXT_SIZE 64
 
 // Definitions for thes states of

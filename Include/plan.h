@@ -18,7 +18,7 @@
 // V
 
 #define getopt winGetopt
-#define VERSION "1.0.0"
+#define VERSION "1.0.1"
 
 extern void help(int argc, char** argv);
 extern void newtask(int argc, char** argv);

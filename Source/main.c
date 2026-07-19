@@ -1,12 +1,32 @@
 #include <stdio.h>
+#include <signal.h>
 #include <arghandler.h>
 #include <plan.h>
 #include <binfile.h>
 
 int recognisedCommand = 0;
 int verbose = 0;
+extern int writing;
+
+void sigintHandler(int intcode)  {
+
+    if (writing) {
+
+        printf("Interrupt ignored ---> Program is writing to file\n");
+        return;
+
+    }
+
+    printf("Program interrupted by sigint, exiting . . .\n");
+    exit(0);
+
+};
 
 int main(int argc, char* argv[]) {
+
+    sigintHandler(3);
+
+    signal(SIGINT, &sigintHandler);
 
     if (argc == 1) {
 
