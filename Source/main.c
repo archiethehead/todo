@@ -24,8 +24,6 @@ void sigintHandler(int intcode)  {
 
 int main(int argc, char* argv[]) {
 
-    sigintHandler(3);
-
     signal(SIGINT, &sigintHandler);
 
     if (argc == 1) {

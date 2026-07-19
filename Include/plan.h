@@ -2,6 +2,7 @@
 #define PLAN_H
 
 #include <arghandler.h>
+#include <binfile.h>
 #include <stdio.h>
 #include <time.h>
 #include <stdint.h>
@@ -18,7 +19,7 @@
 // V
 
 #define getopt winGetopt
-#define VERSION "1.0.1"
+#define VERSION "1.2.0"
 
 extern void help(int argc, char** argv);
 extern void newtask(int argc, char** argv);

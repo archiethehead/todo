@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <time.h>
+#include <arghandler.h>
 
 #define FILE_NAME "Tasks.bin"
 #define fileNotOpenedError printf("%s", fileNotOpened)
@@ -47,11 +48,11 @@ typedef struct {
 #pragma pack(pop)
 
 extern void initBinFile();
+extern int getBinFileSize();
 extern void addTaskToFile(Task newTask);
 extern int getTaskByID(uint16_t id, Task* taskBuffer);
 extern void saveTaskByID(uint16_t id, Task newTaskData);
-extern void outputAlltasks();
-extern void outputActivetasks();
+extern void outputAlltasks(char* filter, uint8_t flag, char* category, char* assignee);
 extern int verbose;
 
 #endif //BIN_FILE_H

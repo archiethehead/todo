@@ -260,7 +260,7 @@ void addTaskToFile(Task newTaskStruct) {
 
 }
 
-void outputAllTasks(char* status, uint8_t flag) {
+void outputAllTasks(char* status, uint8_t flag, char* category, char* assignee) {
     
     printf("\n\n%s tasks:\n", status);
 
@@ -290,6 +290,18 @@ void outputAllTasks(char* status, uint8_t flag) {
         fread(&taskBuff, sizeof(taskBuff), 1, fileptr);
 
         if (!((taskBuff.status == flag) || (!flag))) {
+
+            continue;
+
+        }
+    
+        if (category != NULL && !(strequal(taskBuff.category, category))) {
+
+            continue;
+
+        }
+        
+        if (assignee != NULL && !(strequal(taskBuff.assignee, assignee))) {
 
             continue;
 
@@ -334,6 +346,7 @@ void outputAllTasks(char* status, uint8_t flag) {
             strcpy(time, "N/A\n");
 
         }
+
 
         printf("\n\n%s\nID       --> %d \nCategory --> %s \nAssignee --> %s \nDeadline --> %sStatus   --> %s",
                 taskBuff.title, taskBuff.id, taskBuff.category, taskBuff.assignee, time, status);

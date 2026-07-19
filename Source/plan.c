@@ -1,6 +1,4 @@
 #include <plan.h>
-#include <binfile.h>
-#include <arghandler.h>
 
 extern int verbose;
 
@@ -161,14 +159,17 @@ void outputTasks(int argc, char** argv) {
     
     int opt;
     char* filter = NULL;
+    char* category = NULL;
+    char* assignee = NULL;
 
 	argv += 2;
     argc -= 2;
+
 	optind = 0;
 
     char* args[] = {"task", "help", "todoout"};
 
-    while((opt = getopt(argc, argv, "f::v")) != -1) {
+    while((opt = getopt(argc, argv, "f::c::a::v")) != -1) {
 
 		if (optind == 1) {
 
@@ -194,6 +195,26 @@ void outputTasks(int argc, char** argv) {
                 
                 break;
 
+            case 'c':
+                
+                if (optarg) {
+
+                    category = optarg;
+    
+                }
+
+                break;
+
+            case 'a':
+
+                if (optarg) {
+
+                    assignee = optarg;
+
+                }
+
+                break; 
+
             case 'v':
                 verbose = 1;
                 break;
@@ -208,8 +229,8 @@ void outputTasks(int argc, char** argv) {
 
     if (filter == NULL) {
     
-        outputAllTasks("Active", 2);
-        outputAllTasks("Overdue", 4);   
+        outputAllTasks("Active", 2, category, assignee);
+        outputAllTasks("Overdue", 4, category, assignee);   
         return;        
 
     } 
@@ -227,7 +248,7 @@ void outputTasks(int argc, char** argv) {
 
         if(strequal(filter, outputArgs[i].str)) {
 
-            outputAllTasks(outputArgs[i].str, outputArgs[i].num);
+            outputAllTasks(outputArgs[i].str, outputArgs[i].num, category, assignee);
             return;
 
         }
