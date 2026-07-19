@@ -23,11 +23,7 @@ void newtask(int argc, char** argv) {
 
     while((opt = getopt(argc, argv, "n:c::d:t::a::v")) != -1) {
 
-        if (verbose) {
-    
-            printf("Parsing %c as %s\n", opt, optarg);
-
-        }
+        VOUT_("Parsing %c as %s\n", opt, optarg);
         
         switch(opt) {
 
@@ -125,11 +121,8 @@ void newtask(int argc, char** argv) {
 
     }
 
-    if (verbose) {
-        
-        printf("\nArguments parsed:\nName -> %s \nAssignee -> %s \nCategory -> %s \nDeadline -> %s", taskName, taskCategory, taskAssignee, ctime(&epochTime));
-
-    }
+       
+    VOUT_("\nArguments parsed:\nName -> %s \nAssignee -> %s \nCategory -> %s \nDeadline -> %s", taskName, taskCategory, taskAssignee, ctime(&epochTime));
 
     newTaskStruct.id = 0;
     newTaskStruct.timestamp = epochTime;
@@ -176,12 +169,8 @@ void outputTasks(int argc, char** argv) {
 			continue;
 
 		}
-
-        if (verbose) {
-    
-            printf("Parsing %c as %s\n", opt, optarg);
-
-        }
+ 
+        VOUT_("Parsing %c as %s\n", opt, optarg);
         
         switch(opt) {
 
@@ -296,12 +285,8 @@ void editTask(int argc, char** argv) {
     char* args[] = {"task", "help", "newtodo"};
 
     while((opt = getopt(argc, argv, "n::c::d:t::a::v")) != -1) {
-
-        if (verbose) {
-    
-            printf("Parsing %c as %s\n", opt, optarg);
-
-        }
+   
+        VOUT_("Parsing %c as %s\n", opt, optarg);
         
         switch(opt) {
 

@@ -9,12 +9,8 @@ int writing = 0;
 
 void initBinFile() {
 
-    if (verbose) {
-
-        printf("Created new %s file.\n", FILE_NAME);
-
-    }
-
+    VOUT_("Created new %s file.\n", FILE_NAME);
+    
     FILE* fileptr;
     fileptr = fopen(FILE_NAME, "w");
     fclose(fileptr);
@@ -58,11 +54,7 @@ void updateBinFile() {
 
         if (status == 2 && taskTime < seconds) {
 
-            if (verbose) {
-
-                printf("Deadline expired for task 0x%d\n", taskFileBuffer[i].id);
-
-            }
+            VOUT_("Deadline expired for task 0x%d\n", taskFileBuffer[i].id);
 
             status = OVERDUE;
             taskFileBuffer[i].status = OVERDUE;
@@ -76,12 +68,8 @@ void updateBinFile() {
         }
 
         else if (status == 4 && taskTime > seconds) {
-
-            if (verbose) {
             
-                printf("Overdue revoked for task 0x%d\n", taskFileBuffer[i].id);
-
-            }
+            VOUT_("Overdue revoked for task 0x%d\n", taskFileBuffer[i].id);
 
             status = TAKEN;
             taskFileBuffer[i].status = TAKEN;
@@ -126,11 +114,7 @@ int getTaskByID(uint16_t id, Task* taskBuffer) {
 
     fseek(fileptr, 0, SEEK_SET);
     
-    if (verbose) {
-    
-        printf("Reading at position 0x%x\n", ftell(fileptr));
-
-    }
+    VOUT_("Reading at position 0x%x\n", ftell(fileptr));
 
     fread(taskFileBuffer, sizeof(Task), size, fileptr);
     
@@ -164,11 +148,7 @@ void saveTaskByID(uint16_t id, Task newTaskData) {
     fseek(fileptr, offset, SEEK_SET);
 
  
-    if (verbose) {
-
-        printf("\nOverwriting at position 0x%x\n", ftell(fileptr));
-
-    }
+    VOUT_("\nOverwriting at position 0x%x\n", ftell(fileptr));
 
     WRITING;
     fwrite(&newTaskData, sizeof(Task), 1, fileptr);
@@ -221,13 +201,8 @@ void addTaskToFile(Task newTaskStruct) {
             newTaskStruct.id = taskBuff.id;
             fseek(fileptr, offset, SEEK_SET);
             
-            if (verbose) {
-                
-                printf("\nReusing id 0x%x\n", taskBuff.id);
-                printf("\nOverwriting at free position %d\n", ftell(fileptr));
+            VOUT_("\nReusing id 0x%x\nOverwriting at free position 0x%d\n", taskBuff.id, ftell(fileptr));
 
-            }            
-            
             WRITING;
             fwrite(&newTaskStruct, sizeof(Task), 1, fileptr);
             NOTWRITING;
@@ -242,12 +217,7 @@ void addTaskToFile(Task newTaskStruct) {
 
     newTaskStruct.id = idCount;
 
-    if (verbose) {
-
-        printf("Allocating id 0x%x\n", idCount);    
-        printf("\nWriting at position 0x%x\n", ftell(fileptr));
-
-    }
+    VOUT_("Allocating id 0x%x\nWriting at position 0x%x\n", idCount, ftell(fileptr));    
 
     SET_ID(idCount);
     idCount++;
@@ -280,11 +250,7 @@ void outputAllTasks(char* status, uint8_t flag, char* category, char* assignee) 
         int offset = i * sizeof(Task);
         fseek(fileptr, offset, SEEK_SET);
         
-        if (verbose) {
-
-            printf("\n\nReading at position 0x%x\n", ftell(fileptr));
-
-        }
+        VOUT_("\n\nReading at position 0x%x\n", ftell(fileptr));
 
         Task taskBuff;
         fread(&taskBuff, sizeof(taskBuff), 1, fileptr);

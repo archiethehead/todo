@@ -3,6 +3,7 @@
 
 #include <plan.h>
 
+#define VOUT_(x, ...) if (verbose) printf(x, ##__VA_ARGS__)
 #define strequal(x, y) !(strcmp(x, y))
 
 typedef struct argcommandstruct {
